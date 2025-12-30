@@ -1,0 +1,278 @@
+Sprites/Astronauts/spaceAstronauts_001.png 34 44
+Sprites/Astronauts/spaceAstronauts_002.png 37 44
+Sprites/Astronauts/spaceAstronauts_003.png 50 44
+Sprites/Astronauts/spaceAstronauts_004.png 34 44
+Sprites/Astronauts/spaceAstronauts_005.png 37 44
+Sprites/Astronauts/spaceAstronauts_006.png 50 44
+Sprites/Astronauts/spaceAstronauts_007.png 34 44
+Sprites/Astronauts/spaceAstronauts_008.png 37 44
+Sprites/Astronauts/spaceAstronauts_009.png 50 44
+Sprites/Astronauts/spaceAstronauts_010.png 31 44
+Sprites/Astronauts/spaceAstronauts_011.png 37 44
+Sprites/Astronauts/spaceAstronauts_012.png 50 44
+Sprites/Astronauts/spaceAstronauts_013.png 31 44
+Sprites/Astronauts/spaceAstronauts_014.png 37 44
+Sprites/Astronauts/spaceAstronauts_015.png 50 44
+Sprites/Astronauts/spaceAstronauts_016.png 31 44
+Sprites/Astronauts/spaceAstronauts_017.png 37 44
+Sprites/Astronauts/spaceAstronauts_018.png 50 44
+Sprites/Building/spaceBuilding_001.png 42 42
+Sprites/Building/spaceBuilding_002.png 42 84
+Sprites/Building/spaceBuilding_003.png 46 46
+Sprites/Building/spaceBuilding_004.png 28 28
+Sprites/Building/spaceBuilding_005.png 42 84
+Sprites/Building/spaceBuilding_006.png 46 46
+Sprites/Building/spaceBuilding_007.png 84 84
+Sprites/Building/spaceBuilding_008.png 28 28
+Sprites/Building/spaceBuilding_009.png 84 84
+Sprites/Building/spaceBuilding_010.png 102 14
+Sprites/Building/spaceBuilding_011.png 42 50
+Sprites/Building/spaceBuilding_012.png 55 57
+Sprites/Building/spaceBuilding_013.png 54 55
+Sprites/Building/spaceBuilding_014.png 168 40
+Sprites/Building/spaceBuilding_015.png 168 40
+Sprites/Building/spaceBuilding_016.png 88 88
+Sprites/Building/spaceBuilding_017.png 66 85
+Sprites/Building/spaceBuilding_018.png 42 42
+Sprites/Building/spaceBuilding_019.png 17 38
+Sprites/Building/spaceBuilding_020.png 55 55
+Sprites/Building/spaceBuilding_021.png 27 41
+Sprites/Building/spaceBuilding_022.png 26 41
+Sprites/Building/spaceBuilding_023.png 165 66
+Sprites/Building/spaceBuilding_024.png 165 66
+Sprites/Building/spaceBuilding_025.png 42 42
+Sprites/Effects/spaceEffects_001.png 14 23
+Sprites/Effects/spaceEffects_002.png 13 30
+Sprites/Effects/spaceEffects_003.png 14 25
+Sprites/Effects/spaceEffects_004.png 13 32
+Sprites/Effects/spaceEffects_005.png 6 126
+Sprites/Effects/spaceEffects_006.png 12 126
+Sprites/Effects/spaceEffects_007.png 16 126
+Sprites/Effects/spaceEffects_008.png 21 21
+Sprites/Effects/spaceEffects_009.png 28 24
+Sprites/Effects/spaceEffects_010.png 30 28
+Sprites/Effects/spaceEffects_011.png 26 26
+Sprites/Effects/spaceEffects_012.png 32 32
+Sprites/Effects/spaceEffects_013.png 37 36
+Sprites/Effects/spaceEffects_014.png 35 36
+Sprites/Effects/spaceEffects_015.png 44 50
+Sprites/Effects/spaceEffects_016.png 50 52
+Sprites/Effects/spaceEffects_017.png 14 23
+Sprites/Effects/spaceEffects_018.png 13 30
+Sprites/Meteors/spaceMeteors_001.png 215 211
+Sprites/Meteors/spaceMeteors_002.png 212 218
+Sprites/Meteors/spaceMeteors_003.png 214 227
+Sprites/Meteors/spaceMeteors_004.png 220 221
+Sprites/Missiles/spaceMissiles_001.png 20 35
+Sprites/Missiles/spaceMissiles_002.png 20 35
+Sprites/Missiles/spaceMissiles_003.png 18 51
+Sprites/Missiles/spaceMissiles_004.png 18 51
+Sprites/Missiles/spaceMissiles_005.png 18 51
+Sprites/Missiles/spaceMissiles_006.png 19 40
+Sprites/Missiles/spaceMissiles_007.png 19 40
+Sprites/Missiles/spaceMissiles_008.png 19 40
+Sprites/Missiles/spaceMissiles_009.png 12 48
+Sprites/Missiles/spaceMissiles_010.png 12 48
+Sprites/Missiles/spaceMissiles_011.png 12 48
+Sprites/Missiles/spaceMissiles_012.png 16 22
+Sprites/Missiles/spaceMissiles_013.png 16 22
+Sprites/Missiles/spaceMissiles_014.png 16 22
+Sprites/Missiles/spaceMissiles_015.png 12 25
+Sprites/Missiles/spaceMissiles_016.png 12 25
+Sprites/Missiles/spaceMissiles_017.png 12 25
+Sprites/Missiles/spaceMissiles_018.png 20 35
+Sprites/Missiles/spaceMissiles_019.png 20 35
+Sprites/Missiles/spaceMissiles_020.png 20 35
+Sprites/Missiles/spaceMissiles_021.png 22 46
+Sprites/Missiles/spaceMissiles_022.png 22 46
+Sprites/Missiles/spaceMissiles_023.png 22 46
+Sprites/Missiles/spaceMissiles_024.png 12 47
+Sprites/Missiles/spaceMissiles_025.png 12 47
+Sprites/Missiles/spaceMissiles_026.png 12 47
+Sprites/Missiles/spaceMissiles_027.png 9 33
+Sprites/Missiles/spaceMissiles_028.png 18 33
+Sprites/Missiles/spaceMissiles_029.png 16 49
+Sprites/Missiles/spaceMissiles_030.png 17 38
+Sprites/Missiles/spaceMissiles_031.png 10 46
+Sprites/Missiles/spaceMissiles_032.png 14 20
+Sprites/Missiles/spaceMissiles_033.png 10 23
+Sprites/Missiles/spaceMissiles_034.png 18 33
+Sprites/Missiles/spaceMissiles_035.png 20 44
+Sprites/Missiles/spaceMissiles_036.png 10 45
+Sprites/Missiles/spaceMissiles_037.png 11 35
+Sprites/Missiles/spaceMissiles_038.png 11 35
+Sprites/Missiles/spaceMissiles_039.png 11 35
+Sprites/Missiles/spaceMissiles_040.png 20 35
+Sprites/Parts/spaceParts_001.png 39 71
+Sprites/Parts/spaceParts_002.png 41 71
+Sprites/Parts/spaceParts_003.png 37 72
+Sprites/Parts/spaceParts_004.png 26 84
+Sprites/Parts/spaceParts_005.png 36 79
+Sprites/Parts/spaceParts_006.png 43 82
+Sprites/Parts/spaceParts_007.png 32 86
+Sprites/Parts/spaceParts_008.png 45 77
+Sprites/Parts/spaceParts_009.png 36 76
+Sprites/Parts/spaceParts_010.png 38 71
+Sprites/Parts/spaceParts_011.png 38 71
+Sprites/Parts/spaceParts_012.png 48 70
+Sprites/Parts/spaceParts_013.png 48 70
+Sprites/Parts/spaceParts_014.png 50 67
+Sprites/Parts/spaceParts_015.png 50 67
+Sprites/Parts/spaceParts_016.png 39 71
+Sprites/Parts/spaceParts_017.png 39 71
+Sprites/Parts/spaceParts_018.png 41 71
+Sprites/Parts/spaceParts_019.png 41 71
+Sprites/Parts/spaceParts_020.png 37 72
+Sprites/Parts/spaceParts_021.png 37 72
+Sprites/Parts/spaceParts_022.png 26 84
+Sprites/Parts/spaceParts_023.png 26 84
+Sprites/Parts/spaceParts_024.png 36 79
+Sprites/Parts/spaceParts_025.png 36 79
+Sprites/Parts/spaceParts_026.png 43 82
+Sprites/Parts/spaceParts_027.png 43 82
+Sprites/Parts/spaceParts_028.png 32 86
+Sprites/Parts/spaceParts_029.png 45 77
+Sprites/Parts/spaceParts_030.png 45 77
+Sprites/Parts/spaceParts_031.png 36 76
+Sprites/Parts/spaceParts_032.png 36 76
+Sprites/Parts/spaceParts_033.png 32 86
+Sprites/Parts/spaceParts_034.png 37 56
+Sprites/Parts/spaceParts_035.png 32 63
+Sprites/Parts/spaceParts_036.png 48 62
+Sprites/Parts/spaceParts_037.png 35 71
+Sprites/Parts/spaceParts_038.png 40 57
+Sprites/Parts/spaceParts_039.png 38 63
+Sprites/Parts/spaceParts_040.png 45 66
+Sprites/Parts/spaceParts_041.png 59 66
+Sprites/Parts/spaceParts_042.png 52 67
+Sprites/Parts/spaceParts_043.png 34 66
+Sprites/Parts/spaceParts_044.png 29 47
+Sprites/Parts/spaceParts_045.png 43 62
+Sprites/Parts/spaceParts_046.png 40 66
+Sprites/Parts/spaceParts_047.png 37 56
+Sprites/Parts/spaceParts_048.png 32 63
+Sprites/Parts/spaceParts_049.png 48 62
+Sprites/Parts/spaceParts_050.png 35 71
+Sprites/Parts/spaceParts_051.png 40 57
+Sprites/Parts/spaceParts_052.png 38 63
+Sprites/Parts/spaceParts_053.png 45 66
+Sprites/Parts/spaceParts_054.png 16 16
+Sprites/Parts/spaceParts_055.png 59 66
+Sprites/Parts/spaceParts_056.png 52 67
+Sprites/Parts/spaceParts_057.png 14 29
+Sprites/Parts/spaceParts_058.png 14 29
+Sprites/Parts/spaceParts_059.png 12 30
+Sprites/Parts/spaceParts_060.png 12 30
+Sprites/Parts/spaceParts_061.png 17 26
+Sprites/Parts/spaceParts_062.png 17 26
+Sprites/Parts/spaceParts_063.png 14 28
+Sprites/Parts/spaceParts_064.png 14 28
+Sprites/Parts/spaceParts_065.png 24 29
+Sprites/Parts/spaceParts_066.png 24 29
+Sprites/Parts/spaceParts_067.png 20 30
+Sprites/Parts/spaceParts_068.png 20 30
+Sprites/Parts/spaceParts_069.png 17 32
+Sprites/Parts/spaceParts_070.png 17 32
+Sprites/Parts/spaceParts_071.png 9 33
+Sprites/Parts/spaceParts_072.png 9 33
+Sprites/Parts/spaceParts_073.png 9 33
+Sprites/Parts/spaceParts_074.png 9 33
+Sprites/Parts/spaceParts_075.png 9 33
+Sprites/Parts/spaceParts_076.png 9 33
+Sprites/Parts/spaceParts_077.png 9 33
+Sprites/Parts/spaceParts_078.png 9 33
+Sprites/Parts/spaceParts_079.png 26 26
+Sprites/Parts/spaceParts_080.png 26 26
+Sprites/Parts/spaceParts_081.png 16 16
+Sprites/Parts/spaceParts_082.png 17 25
+Sprites/Parts/spaceParts_083.png 23 21
+Sprites/Parts/spaceParts_084.png 21 18
+Sprites/Parts/spaceParts_085.png 19 31
+Sprites/Parts/spaceParts_086.png 28 31
+Sprites/Parts/spaceParts_087.png 36 22
+Sprites/Parts/spaceParts_088.png 58 28
+Sprites/Parts/spaceParts_089.png 54 12
+Sprites/Parts/spaceParts_090.png 47 26
+Sprites/Parts/spaceParts_091.png 51 14
+Sprites/Parts/spaceParts_092.png 11 30
+Sprites/Parts/spaceParts_093.png 16 38
+Sprites/Parts/spaceParts_094.png 14 32
+Sprites/Parts/spaceParts_095.png 16 42
+Sprites/Parts/spaceParts_096.png 38 71
+Sprites/Parts/spaceParts_097.png 48 70
+Sprites/Parts/spaceParts_098.png 50 67
+Sprites/Rocket parts/spaceRocketParts_001.png 68 78
+Sprites/Rocket parts/spaceRocketParts_002.png 68 78
+Sprites/Rocket parts/spaceRocketParts_003.png 69 26
+Sprites/Rocket parts/spaceRocketParts_004.png 68 71
+Sprites/Rocket parts/spaceRocketParts_005.png 68 40
+Sprites/Rocket parts/spaceRocketParts_006.png 68 73
+Sprites/Rocket parts/spaceRocketParts_007.png 68 73
+Sprites/Rocket parts/spaceRocketParts_008.png 68 41
+Sprites/Rocket parts/spaceRocketParts_009.png 68 64
+Sprites/Rocket parts/spaceRocketParts_010.png 68 64
+Sprites/Rocket parts/spaceRocketParts_011.png 82 49
+Sprites/Rocket parts/spaceRocketParts_012.png 44 44
+Sprites/Rocket parts/spaceRocketParts_013.png 38 36
+Sprites/Rocket parts/spaceRocketParts_014.png 59 52
+Sprites/Rocket parts/spaceRocketParts_015.png 28 28
+Sprites/Rocket parts/spaceRocketParts_016.png 68 64
+Sprites/Rocket parts/spaceRocketParts_017.png 68 64
+Sprites/Rocket parts/spaceRocketParts_018.png 68 64
+Sprites/Rocket parts/spaceRocketParts_019.png 68 64
+Sprites/Rocket parts/spaceRocketParts_020.png 29 170
+Sprites/Rocket parts/spaceRocketParts_021.png 29 132
+Sprites/Rocket parts/spaceRocketParts_022.png 36 160
+Sprites/Rocket parts/spaceRocketParts_023.png 39 146
+Sprites/Rocket parts/spaceRocketParts_024.png 41 80
+Sprites/Rocket parts/spaceRocketParts_025.png 40 97
+Sprites/Rocket parts/spaceRocketParts_026.png 37 89
+Sprites/Rocket parts/spaceRocketParts_027.png 47 85
+Sprites/Rocket parts/spaceRocketParts_028.png 31 83
+Sprites/Rocket parts/spaceRocketParts_029.png 68 78
+Sprites/Rocket parts/spaceRocketParts_030.png 68 78
+Sprites/Rocket parts/spaceRocketParts_031.png 74 45
+Sprites/Rockets/spaceRockets_001.png 122 374
+Sprites/Rockets/spaceRockets_002.png 157 309
+Sprites/Rockets/spaceRockets_003.png 118 315
+Sprites/Rockets/spaceRockets_004.png 136 369
+Sprites/Ships/spaceShips_001.png 106 80
+Sprites/Ships/spaceShips_002.png 101 74
+Sprites/Ships/spaceShips_003.png 100 94
+Sprites/Ships/spaceShips_004.png 126 108
+Sprites/Ships/spaceShips_005.png 136 84
+Sprites/Ships/spaceShips_006.png 94 148
+Sprites/Ships/spaceShips_007.png 172 151
+Sprites/Ships/spaceShips_008.png 100 82
+Sprites/Ships/spaceShips_009.png 114 82
+Sprites/Station/spaceStation_001.png 124 40
+Sprites/Station/spaceStation_002.png 40 28
+Sprites/Station/spaceStation_003.png 40 28
+Sprites/Station/spaceStation_004.png 40 28
+Sprites/Station/spaceStation_005.png 42 44
+Sprites/Station/spaceStation_006.png 36 44
+Sprites/Station/spaceStation_007.png 32 44
+Sprites/Station/spaceStation_008.png 32 44
+Sprites/Station/spaceStation_009.png 16 44
+Sprites/Station/spaceStation_010.png 24 44
+Sprites/Station/spaceStation_011.png 48 44
+Sprites/Station/spaceStation_012.png 32 44
+Sprites/Station/spaceStation_013.png 56 44
+Sprites/Station/spaceStation_014.png 42 44
+Sprites/Station/spaceStation_015.png 122 44
+Sprites/Station/spaceStation_016.png 40 40
+Sprites/Station/spaceStation_017.png 82 44
+Sprites/Station/spaceStation_018.png 172 52
+Sprites/Station/spaceStation_019.png 172 52
+Sprites/Station/spaceStation_020.png 124 347
+Sprites/Station/spaceStation_021.png 172 288
+Sprites/Station/spaceStation_022.png 172 40
+Sprites/Station/spaceStation_023.png 172 40
+Sprites/Station/spaceStation_024.png 276 400
+Sprites/Station/spaceStation_025.png 16 66
+Sprites/Station/spaceStation_026.png 24 42
+Sprites/Station/spaceStation_027.png 20 66
+Sprites/Station/spaceStation_028.png 124 58
+Sprites/Station/spaceStation_029.png 84 36
+Sprites/Station/spaceStation_030.png 52 34
+Sprites/Station/spaceStation_031.png 60 38
