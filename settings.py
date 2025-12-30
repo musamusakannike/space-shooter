@@ -19,6 +19,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SPRITES_DIR = os.path.join(BASE_DIR, 'Sprites')
 AUDIO_DIR = os.path.join(BASE_DIR, 'Audio')
 BG_MUSIC_PATH = os.path.join(AUDIO_DIR, 'bg_music.mp3')
+COLLISION_SOUND_PATH = os.path.join(AUDIO_DIR, 'collision.mp3')
 
 # Game Settings
 PLAYER_SPEED = 5

@@ -33,6 +33,13 @@ class GameManager:
         # Player
         self.player = None
 
+        # Audio
+        try:
+            self.collision_sound = pygame.mixer.Sound(COLLISION_SOUND_PATH)
+        except Exception as e:
+            print(f"Failed to load collision sound: {e}")
+            self.collision_sound = None
+
     def start_game(self, mode='endless'):
         self.game_active = True
         self.game_mode = mode
@@ -80,6 +87,7 @@ class GameManager:
         hits = pygame.sprite.groupcollide(self.obstacle_sprites, self.player_bullets, True, True)
         if hits:
             for hit_sprite in hits:
+                if self.collision_sound: self.collision_sound.play()
                 Explosion(hit_sprite.rect.center, [self.visible_sprites, self.all_sprites])
                 self.player.score += 100
                 if self.game_mode == 'levels':
@@ -91,6 +99,7 @@ class GameManager:
         collide_sprites = pygame.sprite.spritecollide(self.player, self.obstacle_sprites, True)
         if collide_sprites:
             for sprite in collide_sprites:
+                if self.collision_sound: self.collision_sound.play()
                 self.player.health -= 20
                 Explosion(sprite.rect.center, [self.visible_sprites, self.all_sprites])
                 if self.player.health <= 0:
