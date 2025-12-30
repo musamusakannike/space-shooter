@@ -49,7 +49,7 @@ class Game:
         self.game_manager.update()
 
     def draw(self):
-        self.screen.fill(BLACK)
+        self.screen.fill(UI_BG_DARK)
         self.game_manager.draw()
         pygame.display.flip()
 

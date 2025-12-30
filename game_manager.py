@@ -4,11 +4,24 @@ import sys
 from settings import *
 from sprites import Player, Bullet, Enemy, Meteor, Explosion
 from ui import UI
+from effects import ParticleSystem
 
 class GameManager:
     def __init__(self, surface):
         self.display_surface = surface
         self.ui = UI(self.display_surface)
+        
+        # Setup UI callbacks
+        self.ui.create_menu_buttons({
+            'endless': lambda: self.start_game('endless'),
+            'levels': lambda: self.start_game('levels'),
+            'quit': self.quit_game
+        })
+        
+        self.ui.create_game_over_buttons({
+            'restart': lambda: self.start_game(self.game_mode),
+            'menu': self.return_to_menu
+        })
         
         # Sprite Groups
         self.visible_sprites = pygame.sprite.Group()
@@ -19,6 +32,7 @@ class GameManager:
 
         # Game State
         self.game_active = False
+        self.game_state = 'menu'  # 'menu', 'playing', 'game_over'
         self.game_mode = 'endless' # 'endless' or 'levels'
         self.current_level = 1
         self.level_enemy_count = 0
@@ -42,6 +56,7 @@ class GameManager:
 
     def start_game(self, mode='endless'):
         self.game_active = True
+        self.game_state = 'playing'
         self.game_mode = mode
         self.current_level = 1
         
@@ -89,7 +104,20 @@ class GameManager:
             for hit_sprite in hits:
                 if self.collision_sound: self.collision_sound.play()
                 Explosion(hit_sprite.rect.center, [self.visible_sprites, self.all_sprites])
-                self.player.score += 100
+                
+                # Add score with popup
+                points = 100
+                self.player.score += points
+                self.ui.add_score_popup(hit_sprite.rect.centerx, hit_sprite.rect.centery, points)
+                
+                # Particle explosion
+                self.ui.particle_system.emit_explosion(
+                    hit_sprite.rect.centerx, 
+                    hit_sprite.rect.centery,
+                    PARTICLE_COUNT_EXPLOSION,
+                    (255, 150, 50)
+                )
+                
                 if self.game_mode == 'levels':
                     # Check if level complete
                     if self.enemies_spawned >= self.enemies_for_level and len(self.obstacle_sprites) == 0:
@@ -102,31 +130,54 @@ class GameManager:
                 if self.collision_sound: self.collision_sound.play()
                 self.player.health -= 20
                 Explosion(sprite.rect.center, [self.visible_sprites, self.all_sprites])
+                
+                # Visual feedback for damage
+                self.ui.trigger_screen_shake(SCREEN_SHAKE_TRAUMA)
+                self.ui.trigger_damage_flash()
+                
+                # Particle explosion
+                self.ui.particle_system.emit_explosion(
+                    sprite.rect.centerx,
+                    sprite.rect.centery,
+                    PARTICLE_COUNT_EXPLOSION,
+                    (255, 50, 50)
+                )
+                
                 if self.player.health <= 0:
                     self.game_over()
 
     def game_over(self):
         self.game_active = False
+        self.game_state = 'game_over'
         # Maybe show explosion on player
         Explosion(self.player.rect.center, [self.visible_sprites, self.all_sprites])
+        # Big explosion effect
+        self.ui.particle_system.emit_explosion(
+            self.player.rect.centerx,
+            self.player.rect.centery,
+            PARTICLE_COUNT_EXPLOSION * 2,
+            (255, 100, 0)
+        )
+        self.ui.trigger_screen_shake(SCREEN_SHAKE_TRAUMA * 2)
+    
+    def return_to_menu(self):
+        """Return to main menu"""
+        self.game_active = False
+        self.game_state = 'menu'
+    
+    def quit_game(self):
+        """Quit the game"""
+        pygame.quit()
+        sys.exit()
 
     def handle_event(self, event):
+        # Pass events to UI for button handling
+        self.ui.handle_event(event, self.game_state)
+        
         if event.type == pygame.KEYDOWN:
             if self.game_active:
                 if event.key == pygame.K_ESCAPE:
-                    self.game_active = False # Pause/Back to menu
-            else:
-                if event.key == pygame.K_RETURN:
-                    self.start_game(mode='endless')
-                elif event.key == pygame.K_l:
-                    self.start_game(mode='levels')
-                elif event.key == pygame.K_q:
-                    pygame.quit()
-                    sys.exit()
-                elif event.key == pygame.K_r:
-                     # Restart if game over (game_active is False but player exists with <= 0 health)
-                     if self.player and self.player.health <= 0:
-                         self.start_game(self.game_mode)
+                    self.return_to_menu()
 
         if self.game_active:
             if event.type == self.enemy_spawn_timer:
@@ -135,19 +186,33 @@ class GameManager:
                 self.create_meteor()
 
     def update(self):
+        # Always update UI animations
+        dt = 1 / FPS  # Delta time
+        self.ui.update(dt, self.game_state)
+        
         if self.game_active:
             self.all_sprites.update()
             self.check_collisions()
-        else:
-            # Check menu inputs are handled in events
-            pass
 
     def draw(self):
-        if self.game_active:
+        if self.game_state == 'playing':
+            # Draw starfield background
+            self.ui.particle_system.draw(self.display_surface)
+            
+            # Draw game sprites
             self.visible_sprites.draw(self.display_surface)
+            
+            # Draw HUD
             self.ui.display_hud(self.player)
-        else:
-            if hasattr(self, 'player') and self.player and self.player.health <= 0:
-               self.ui.show_game_over(self.player.score)
-            else:
-               self.ui.show_menu()
+            
+            # Draw flash effect
+            self.ui.flash_effect.draw(self.display_surface)
+            
+        elif self.game_state == 'game_over':
+            # Draw final game state
+            self.ui.particle_system.draw(self.display_surface)
+            self.visible_sprites.draw(self.display_surface)
+            self.ui.show_game_over(self.player.score if self.player else 0)
+            
+        else:  # menu
+            self.ui.show_menu()
