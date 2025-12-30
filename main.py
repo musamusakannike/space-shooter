@@ -13,6 +13,15 @@ class Game:
         self.clock = pygame.time.Clock()
         self.running = True
         
+        # Initialize Audio
+        try:
+            pygame.mixer.init()
+            pygame.mixer.music.load(BG_MUSIC_PATH)
+            pygame.mixer.music.play(loops=-1)
+            print("Background music started.")
+        except Exception as e:
+            print(f"Error loading music: {e}")
+        
         # Load assets
         print("Loading assets...")
         asset_manager.load_images()
