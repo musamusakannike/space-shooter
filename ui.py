@@ -118,7 +118,8 @@ class UI:
         self.menu_buttons = [
             Button("START ENDLESS", SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2, 300, 60, callbacks.get('endless')),
             Button("LEVEL MODE", SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 80, 300, 60, callbacks.get('levels')),
-            Button("QUIT", SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 160, 300, 60, callbacks.get('quit')),
+            Button("TOGGLE FULLSCREEN", SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 160, 300, 60, callbacks.get('fullscreen')),
+            Button("QUIT", SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 240, 300, 60, callbacks.get('quit')),
         ]
     
     def create_game_over_buttons(self, callbacks):

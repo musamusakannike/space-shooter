@@ -10,11 +10,13 @@ class GameManager:
     def __init__(self, surface):
         self.display_surface = surface
         self.ui = UI(self.display_surface)
+        self.fullscreen_callback = None  # Will be set by main game
         
         # Setup UI callbacks
         self.ui.create_menu_buttons({
             'endless': lambda: self.start_game('endless'),
             'levels': lambda: self.start_game('levels'),
+            'fullscreen': self.toggle_fullscreen,
             'quit': self.quit_game
         })
         
@@ -169,6 +171,11 @@ class GameManager:
         """Quit the game"""
         pygame.quit()
         sys.exit()
+    
+    def toggle_fullscreen(self):
+        """Toggle fullscreen mode"""
+        if self.fullscreen_callback:
+            self.fullscreen_callback()
 
     def handle_event(self, event):
         # Pass events to UI for button handling

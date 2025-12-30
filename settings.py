@@ -5,6 +5,7 @@ import os
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
 FPS = 60
+FULLSCREEN = False  # Toggle fullscreen mode
 
 # Colors
 WHITE = (255, 255, 255)

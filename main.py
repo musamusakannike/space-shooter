@@ -8,7 +8,19 @@ from game_manager import GameManager
 class Game:
     def __init__(self, width=SCREEN_WIDTH, height=SCREEN_HEIGHT):
         pygame.init()
-        self.screen = pygame.display.set_mode((width, height))
+        self.width = width
+        self.height = height
+        self.fullscreen = FULLSCREEN
+        
+        # Set initial display mode
+        if self.fullscreen:
+            self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+            # Get actual fullscreen dimensions
+            self.width = self.screen.get_width()
+            self.height = self.screen.get_height()
+        else:
+            self.screen = pygame.display.set_mode((width, height))
+        
         pygame.display.set_caption("Space Shooter")
         self.clock = pygame.time.Clock()
         self.running = True
@@ -29,6 +41,7 @@ class Game:
 
         # Initialize Game Manager
         self.game_manager = GameManager(self.screen)
+        self.game_manager.fullscreen_callback = self.toggle_fullscreen
 
     def run(self):
         while self.running:
@@ -52,6 +65,22 @@ class Game:
         self.screen.fill(UI_BG_DARK)
         self.game_manager.draw()
         pygame.display.flip()
+    
+    def toggle_fullscreen(self):
+        """Toggle between fullscreen and windowed mode"""
+        self.fullscreen = not self.fullscreen
+        
+        if self.fullscreen:
+            self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+            self.width = self.screen.get_width()
+            self.height = self.screen.get_height()
+        else:
+            self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+            self.width = SCREEN_WIDTH
+            self.height = SCREEN_HEIGHT
+        
+        # Reinitialize game manager with new screen
+        self.game_manager = GameManager(self.screen)
 
     def quit(self):
         pygame.quit()
