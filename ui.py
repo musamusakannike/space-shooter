@@ -117,10 +117,41 @@ class UI:
         """Create menu buttons with callbacks"""
         self.menu_buttons = [
             Button("START ENDLESS", SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2, 300, 60, callbacks.get('endless')),
-            Button("LEVEL MODE", SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 80, 300, 60, callbacks.get('levels')),
+            Button("STORY MODE", SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 80, 300, 60, callbacks.get('story')),
             Button("TOGGLE FULLSCREEN", SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 160, 300, 60, callbacks.get('fullscreen')),
             Button("QUIT", SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 240, 300, 60, callbacks.get('quit')),
         ]
+        
+        # Story selection buttons (created dynamically)
+        self.story_buttons = []
+    
+    def create_story_buttons(self, stories, start_story_callback):
+        """Create story selection buttons"""
+        self.story_buttons = []
+        start_y = SCREEN_HEIGHT // 2 - 100
+        
+        for i, story in enumerate(stories):
+            button = Button(
+                f"STORY {story.id}: {story.title}",
+                SCREEN_WIDTH // 2,
+                start_y + (i * 100),
+                500,
+                70,
+                lambda sid=story.id: start_story_callback(sid),
+                font_size=32
+            )
+            self.story_buttons.append(button)
+        
+        # Add back button
+        back_button = Button(
+            "BACK TO MENU",
+            SCREEN_WIDTH // 2,
+            start_y + (len(stories) * 100) + 50,
+            300,
+            60,
+            lambda: None  # Will be handled separately
+        )
+        self.story_buttons.append(back_button)
     
     def create_game_over_buttons(self, callbacks):
         """Create game over buttons"""
@@ -134,7 +165,10 @@ class UI:
         if game_state == 'menu':
             for button in self.menu_buttons:
                 button.handle_event(event)
-        elif game_state == 'game_over':
+        elif game_state == 'story_select':
+            for button in self.story_buttons:
+                button.handle_event(event)
+        elif game_state == 'game_over' or game_state == 'story_complete':
             for button in self.game_over_buttons:
                 button.handle_event(event)
 
@@ -151,7 +185,10 @@ class UI:
         if game_state == 'menu':
             for button in self.menu_buttons:
                 button.update(dt)
-        elif game_state == 'game_over':
+        elif game_state == 'story_select':
+            for button in self.story_buttons:
+                button.update(dt)
+        elif game_state == 'game_over' or game_state == 'story_complete':
             for button in self.game_over_buttons:
                 button.update(dt)
         
@@ -168,9 +205,14 @@ class UI:
         if abs(self.health_display - self.health_target) > 0.5:
             self.health_display += (self.health_target - self.health_display) * 8 * dt
 
-    def add_score_popup(self, x, y, points):
+    def add_score_popup(self, x, y, points, color=None):
         """Add a floating score popup"""
-        self.text_popups.append(TextPopup(f"+{points}", x, y, UI_ACCENT, 36))
+        if color is None:
+            color = UI_ACCENT
+        
+        # Handle both numeric and string points
+        text = f"+{points}" if isinstance(points, int) else str(points)
+        self.text_popups.append(TextPopup(text, x, y, color, 36))
 
     def trigger_damage_flash(self):
         """Trigger red flash for damage"""
@@ -325,3 +367,164 @@ class UI:
         # Draw buttons
         for button in self.game_over_buttons:
             button.draw(self.display_surface)
+    
+    def show_story_select(self, stories):
+        """Display story selection screen"""
+        # Draw starfield
+        self.particle_system.draw(self.display_surface)
+        
+        # Title
+        title_text = "SELECT YOUR MISSION"
+        title_surf = self.title_font.render(title_text, True, UI_PRIMARY)
+        title_rect = title_surf.get_rect(center=(SCREEN_WIDTH // 2, 100))
+        self.display_surface.blit(title_surf, title_rect)
+        
+        # Draw story buttons
+        for button in self.story_buttons:
+            button.draw(self.display_surface)
+        
+        # Draw story descriptions
+        start_y = SCREEN_HEIGHT // 2 - 100
+        for i, story in enumerate(stories):
+            desc_y = start_y + (i * 100) + 45
+            desc_text = story.subtitle
+            desc_surf = pygame.font.SysFont('arial', 20).render(desc_text, True, UI_TEXT_DIM)
+            desc_rect = desc_surf.get_rect(center=(SCREEN_WIDTH // 2, desc_y))
+            self.display_surface.blit(desc_surf, desc_rect)
+    
+    def show_story_complete(self, story, score):
+        """Display story completion screen"""
+        # Draw starfield
+        self.particle_system.draw(self.display_surface)
+        
+        # Semi-transparent overlay
+        overlay = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SRCALPHA)
+        overlay.fill((0, 0, 0, 150))
+        self.display_surface.blit(overlay, (0, 0))
+        
+        # Mission Complete title
+        complete_surf = self.title_font.render("MISSION COMPLETE!", True, UI_SUCCESS)
+        complete_rect = complete_surf.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 4))
+        
+        # Glow effect
+        glow_surf = self.title_font.render("MISSION COMPLETE!", True, (*UI_SUCCESS, 100))
+        for offset in [(3, 3), (-3, 3), (3, -3), (-3, -3)]:
+            glow_rect = complete_rect.copy()
+            glow_rect.x += offset[0]
+            glow_rect.y += offset[1]
+            self.display_surface.blit(glow_surf, glow_rect)
+        
+        self.display_surface.blit(complete_surf, complete_rect)
+        
+        # Story title
+        story_surf = self.menu_font.render(story.title, True, UI_PRIMARY)
+        story_rect = story_surf.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 80))
+        self.display_surface.blit(story_surf, story_rect)
+        
+        # Final Score
+        score_text = f"FINAL SCORE: {int(self.score_display)}"
+        score_surf = self.menu_font.render(score_text, True, UI_ACCENT)
+        score_rect = score_surf.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
+        self.display_surface.blit(score_surf, score_rect)
+        
+        # Bonus
+        bonus_text = f"COMPLETION BONUS: +{story.completion_reward}"
+        bonus_surf = self.font.render(bonus_text, True, UI_SUCCESS)
+        bonus_rect = bonus_surf.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 50))
+        self.display_surface.blit(bonus_surf, bonus_rect)
+        
+        # Draw buttons
+        for button in self.game_over_buttons:
+            button.draw(self.display_surface)
+    
+    def display_story_hud(self, player, story_mode):
+        """Display HUD for story mode with challenges and wave info"""
+        # Standard HUD
+        self.display_hud(player)
+        
+        # Story-specific info
+        if story_mode.current_story:
+            story = story_mode.current_story
+            
+            # Wave indicator
+            wave_num = story_mode.current_wave_index + 1
+            total_waves = len(story.waves)
+            wave_text = f"WAVE {wave_num}/{total_waves}"
+            wave_surf = self.font.render(wave_text, True, UI_PRIMARY)
+            wave_rect = wave_surf.get_rect(center=(SCREEN_WIDTH // 2, 20))
+            self.display_surface.blit(wave_surf, wave_rect)
+            
+            # Challenges display
+            y_offset = 60
+            for challenge in story.challenges:
+                if challenge.type in story_mode.challenges_status:
+                    status = story_mode.challenges_status[challenge.type]
+                    
+                    if challenge.type == 'limited_bullets':
+                        text = f"AMMO: {player.bullets_remaining}"
+                        color = UI_DANGER if player.bullets_remaining < 10 else UI_TEXT
+                    elif challenge.type == 'time_limit':
+                        # Account for pause time from narrative
+                        elapsed = (pygame.time.get_ticks() - story_mode.story_start_time - story_mode.total_pause_time) // 1000
+                        remaining = max(0, challenge.value - elapsed)
+                        text = f"TIME: {remaining}s"
+                        color = UI_DANGER if remaining < 30 else UI_TEXT
+                    elif challenge.type == 'shoot_cooldown':
+                        text = f"FIRE RATE: SLOW"
+                        color = UI_TEXT_DIM
+                    else:
+                        continue
+                    
+                    challenge_surf = pygame.font.SysFont('arial', 24).render(text, True, color)
+                    challenge_rect = challenge_surf.get_rect(topleft=(20, y_offset))
+                    self.display_surface.blit(challenge_surf, challenge_rect)
+                    y_offset += 30
+            
+            # Power-up status indicators
+            status_y = SCREEN_HEIGHT - 100
+            if player.invincible:
+                inv_surf = pygame.font.SysFont('arial', 20, bold=True).render("INVINCIBLE", True, (255, 215, 0))
+                self.display_surface.blit(inv_surf, (SCREEN_WIDTH - 150, status_y))
+                status_y += 25
+            
+            if player.shield_active:
+                shield_surf = pygame.font.SysFont('arial', 20, bold=True).render("SHIELD", True, (150, 150, 255))
+                self.display_surface.blit(shield_surf, (SCREEN_WIDTH - 150, status_y))
+                status_y += 25
+            
+            if player.reverse_controls:
+                rev_surf = pygame.font.SysFont('arial', 20, bold=True).render("REVERSED!", True, (255, 50, 50))
+                self.display_surface.blit(rev_surf, (SCREEN_WIDTH - 150, status_y))
+    
+    def display_narrative(self, narrative_text):
+        """Display story narrative text"""
+        # Semi-transparent overlay
+        overlay = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SRCALPHA)
+        overlay.fill((0, 0, 0, 180))
+        self.display_surface.blit(overlay, (0, 0))
+        
+        # Narrative box
+        box_width = 800
+        box_height = 400
+        box_x = (SCREEN_WIDTH - box_width) // 2
+        box_y = (SCREEN_HEIGHT - box_height) // 2
+        
+        # Background
+        box_rect = pygame.Rect(box_x, box_y, box_width, box_height)
+        pygame.draw.rect(self.display_surface, (20, 20, 40), box_rect, border_radius=10)
+        pygame.draw.rect(self.display_surface, UI_PRIMARY, box_rect, 3, border_radius=10)
+        
+        # Display narrative lines
+        line_height = 40
+        start_y = box_y + 50
+        
+        for i, line in enumerate(narrative_text):
+            line_surf = self.font.render(line, True, UI_TEXT)
+            line_rect = line_surf.get_rect(center=(SCREEN_WIDTH // 2, start_y + i * line_height))
+            self.display_surface.blit(line_surf, line_rect)
+        
+        # Continue prompt
+        prompt_text = "Press SPACE to continue..."
+        prompt_surf = pygame.font.SysFont('arial', 24).render(prompt_text, True, UI_TEXT_DIM)
+        prompt_rect = prompt_surf.get_rect(center=(SCREEN_WIDTH // 2, box_y + box_height - 40))
+        self.display_surface.blit(prompt_surf, prompt_rect)

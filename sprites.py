@@ -24,17 +24,40 @@ class Player(pygame.sprite.Sprite):
         
         self.direction = pygame.math.Vector2()
         self.speed = PLAYER_SPEED
+        self.base_speed = PLAYER_SPEED
         self.last_shot_time = 0
         self.shoot_delay = 250 # ms
+        self.base_shoot_delay = 250
 
         self.health = 100
         self.max_health = 100
         self.score = 0
+        
+        # Power-up states
+        self.invincible = False
+        self.invincible_timer = 0
+        self.invincible_duration = 5000
+        self.shield_active = False
+        self.shield_timer = 0
+        self.shield_duration = 8000
+        self.reverse_controls = False
+        self.reverse_timer = 0
+        self.reverse_duration = 5000
+        
+        # Bullets tracking for story mode
+        self.bullets_fired = 0
+        self.bullets_remaining = -1  # -1 means unlimited
 
     def input(self):
         keys = pygame.key.get_pressed()
-        self.direction.x = int(keys[pygame.K_RIGHT]) - int(keys[pygame.K_LEFT])
-        self.direction.y = int(keys[pygame.K_DOWN]) - int(keys[pygame.K_UP])
+        
+        # Handle reverse controls debuff
+        if self.reverse_controls:
+            self.direction.x = int(keys[pygame.K_LEFT]) - int(keys[pygame.K_RIGHT])
+            self.direction.y = int(keys[pygame.K_UP]) - int(keys[pygame.K_DOWN])
+        else:
+            self.direction.x = int(keys[pygame.K_RIGHT]) - int(keys[pygame.K_LEFT])
+            self.direction.y = int(keys[pygame.K_DOWN]) - int(keys[pygame.K_UP])
         
         # Normalize to avoid faster diagonal movement
         if self.direction.magnitude() > 0:
@@ -59,24 +82,69 @@ class Player(pygame.sprite.Sprite):
 
     def shoot(self):
         current_time = pygame.time.get_ticks()
+        
+        # Check bullet limit for story mode
+        if self.bullets_remaining == 0:
+            return
+            
         if current_time - self.last_shot_time > self.shoot_delay:
-            # Create bullet
-            # Use 'groups' passed from GameManager, but we need access to them.
-            # Best way: pass groups to shoot method or have a callback?
-            # Or assume GameManager sets a static reference or pass bullet_group in __init__
-            # For simplicity, let's look for a 'bullet_groups' attribute or similar.
-            # Actually, best practice: Player doesn't need to know about groups if we return bullets,
-            # but standard pygame way is to add to groups.
-            # Let's make Player accept bullet_group in __init__ or have a callback.
-            pass # Handled by return or callback in update? 
-            # Let's use a callback for flexibility
             if hasattr(self, 'create_bullet_callback'):
                 self.create_bullet_callback(self.rect.centerx, self.rect.top)
                 self.last_shot_time = current_time
+                self.bullets_fired += 1
+                
+                if self.bullets_remaining > 0:
+                    self.bullets_remaining -= 1
+    
+    def apply_powerup(self, power_type):
+        """Apply power-up effect"""
+        current_time = pygame.time.get_ticks()
+        
+        if power_type == 'health':
+            self.health = min(self.health + 30, self.max_health)
+        elif power_type == 'speed_boost':
+            self.speed = self.base_speed * 1.5
+        elif power_type == 'invincibility':
+            self.invincible = True
+            self.invincible_timer = current_time
+        elif power_type == 'rapid_fire':
+            self.shoot_delay = self.base_shoot_delay // 2
+        elif power_type == 'shield':
+            self.shield_active = True
+            self.shield_timer = current_time
+    
+    def apply_powerdown(self, debuff_type):
+        """Apply power-down effect"""
+        current_time = pygame.time.get_ticks()
+        
+        if debuff_type == 'slow':
+            self.speed = self.base_speed * 0.5
+        elif debuff_type == 'weak_bullets':
+            self.shoot_delay = self.base_shoot_delay * 2
+        elif debuff_type == 'reverse_controls':
+            self.reverse_controls = True
+            self.reverse_timer = current_time
+    
+    def update_powerup_timers(self):
+        """Update power-up timers and reset effects"""
+        current_time = pygame.time.get_ticks()
+        
+        # Invincibility
+        if self.invincible and current_time - self.invincible_timer > self.invincible_duration:
+            self.invincible = False
+        
+        # Shield
+        if self.shield_active and current_time - self.shield_timer > self.shield_duration:
+            self.shield_active = False
+        
+        # Reverse controls
+        if self.reverse_controls and current_time - self.reverse_timer > self.reverse_duration:
+            self.reverse_controls = False
 
     def update(self):
         self.input()
         self.move()
+        self.update_powerup_timers()
 
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, pos, groups, is_player=True):
@@ -180,20 +248,147 @@ class Meteor(pygame.sprite.Sprite):
         if self.rect.top > SCREEN_HEIGHT:
             self.kill()
 
+class EnemyShooter(pygame.sprite.Sprite):
+    def __init__(self, groups, enemy_type='shooter'):
+        super().__init__(groups)
+        self.enemy_type = enemy_type
+        
+        img_name = 'ships_spaceships_007_png'
+        self.speed = random.uniform(1.5, 3.0)
+        self.health = 2
+        
+        self.original_image = asset_manager.get_image(img_name)
+        if not self.original_image:
+            self.original_image = pygame.Surface((40, 40))
+            self.original_image.fill(RED)
+            
+        self.image = pygame.transform.scale(self.original_image, (50, 50))
+        self.image = pygame.transform.rotate(self.image, 180)
+        
+        x_pos = random.randint(50, SCREEN_WIDTH - 50)
+        self.rect = self.image.get_rect(midbottom=(x_pos, 0))
+        
+        self.last_shot_time = 0
+        self.shoot_delay = random.randint(1500, 3000)
+        self.create_bullet_callback = None
+        self.move_pattern = random.choice(['straight', 'zigzag'])
+        self.direction = random.choice([-1, 1])
+        
+    def shoot(self):
+        current_time = pygame.time.get_ticks()
+        if current_time - self.last_shot_time > self.shoot_delay:
+            if self.create_bullet_callback:
+                self.create_bullet_callback(self.rect.centerx, self.rect.bottom)
+                self.last_shot_time = current_time
+                self.shoot_delay = random.randint(1500, 3000)
+    
+    def update(self):
+        self.rect.y += self.speed
+        
+        if self.move_pattern == 'zigzag':
+            self.rect.x += self.direction * 2
+            if self.rect.left < 0 or self.rect.right > SCREEN_WIDTH:
+                self.direction *= -1
+        
+        self.shoot()
+        
+        if self.rect.top > SCREEN_HEIGHT:
+            self.kill()
+
+class EnemyRocket(pygame.sprite.Sprite):
+    def __init__(self, groups):
+        super().__init__(groups)
+        
+        img_name = 'missiles_spacemissiles_016_png'
+        self.original_image = asset_manager.get_image(img_name)
+        if not self.original_image:
+            self.original_image = pygame.Surface((30, 60))
+            self.original_image.fill((200, 50, 50))
+            
+        self.image = pygame.transform.scale(self.original_image, (40, 70))
+        self.image = pygame.transform.rotate(self.image, 180)
+        
+        x_pos = random.randint(50, SCREEN_WIDTH - 50)
+        self.rect = self.image.get_rect(midbottom=(x_pos, 0))
+        
+        self.speed = random.uniform(3, 5)
+        self.health = 3
+        
+    def update(self):
+        self.rect.y += self.speed
+        if self.rect.top > SCREEN_HEIGHT:
+            self.kill()
+
+class PowerUp(pygame.sprite.Sprite):
+    def __init__(self, pos, groups, power_type='health'):
+        super().__init__(groups)
+        self.power_type = power_type
+        
+        # Map power types to sprites and colors
+        power_configs = {
+            'health': ('parts_spaceparts_066_png', (50, 255, 100)),
+            'speed_boost': ('parts_spaceparts_072_png', (100, 200, 255)),
+            'invincibility': ('parts_spaceparts_057_png', (255, 215, 0)),
+            'rapid_fire': ('parts_spaceparts_055_png', (255, 150, 50)),
+            'shield': ('parts_spaceparts_052_png', (150, 150, 255)),
+        }
+        
+        img_name, self.color = power_configs.get(power_type, ('parts_spaceparts_066_png', (255, 255, 255)))
+        self.original_image = asset_manager.get_image(img_name)
+        
+        if not self.original_image:
+            self.original_image = pygame.Surface((30, 30))
+            self.original_image.fill(self.color)
+        
+        self.image = pygame.transform.scale(self.original_image, (35, 35))
+        self.rect = self.image.get_rect(center=pos)
+        
+        self.speed = 2
+        self.float_offset = 0
+        self.float_speed = 3
+        
+    def update(self):
+        self.rect.y += self.speed
+        self.float_offset += self.float_speed * 0.1
+        self.rect.x += math.sin(self.float_offset) * 2
+        
+        if self.rect.top > SCREEN_HEIGHT:
+            self.kill()
+
+class PowerDown(pygame.sprite.Sprite):
+    def __init__(self, pos, groups, debuff_type='slow'):
+        super().__init__(groups)
+        self.debuff_type = debuff_type
+        
+        debuff_configs = {
+            'slow': ('parts_spaceparts_088_png', (150, 50, 50)),
+            'weak_bullets': ('parts_spaceparts_086_png', (200, 100, 50)),
+            'reverse_controls': ('parts_spaceparts_091_png', (180, 50, 180)),
+        }
+        
+        img_name, self.color = debuff_configs.get(debuff_type, ('parts_spaceparts_088_png', (150, 50, 50)))
+        self.original_image = asset_manager.get_image(img_name)
+        
+        if not self.original_image:
+            self.original_image = pygame.Surface((30, 30))
+            self.original_image.fill(self.color)
+        
+        self.image = pygame.transform.scale(self.original_image, (35, 35))
+        self.rect = self.image.get_rect(center=pos)
+        
+        self.speed = 2.5
+        self.pulse = 0
+        
+    def update(self):
+        self.rect.y += self.speed
+        self.pulse += 0.2
+        
+        if self.rect.top > SCREEN_HEIGHT:
+            self.kill()
+
 class Explosion(pygame.sprite.Sprite):
     def __init__(self, pos, groups):
         super().__init__(groups)
-        # Using effects
-        self.frames = []
-        # Let's verify what effects we have. Based on list, spaceEffects_001 to 018.
-        # Maybe 008-012 look like explosions?
-        # Let's load a sequence.
-        # Assuming spaceEffects_008 to 012 might be explosion or similar.
-        # Actually checking the list:
-        # 51: Sprites/Effects/spaceEffects_008.png
-        # ...
-        # Use a generic expanding circle or one of the sprites if unsure.
-        # I'll use spaceEffects_010.png as a simple poof for now, or just a few frames if I knew them.
         self.image = asset_manager.get_image('effects_spaceeffects_010_png')
         if not self.image:
              self.image = pygame.Surface((20, 20))
@@ -201,7 +396,7 @@ class Explosion(pygame.sprite.Sprite):
         
         self.rect = self.image.get_rect(center=pos)
         self.timer = pygame.time.get_ticks()
-        self.duration = 200 # ms
+        self.duration = 200
 
     def update(self):
         if pygame.time.get_ticks() - self.timer > self.duration:
