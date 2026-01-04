@@ -53,11 +53,11 @@ class Player(pygame.sprite.Sprite):
         
         # Handle reverse controls debuff
         if self.reverse_controls:
-            self.direction.x = int(keys[pygame.K_LEFT]) - int(keys[pygame.K_RIGHT])
-            self.direction.y = int(keys[pygame.K_UP]) - int(keys[pygame.K_DOWN])
+            self.direction.x = int(keys[pygame.K_LEFT] or keys[pygame.K_a]) - int(keys[pygame.K_RIGHT] or keys[pygame.K_d])
+            self.direction.y = int(keys[pygame.K_UP] or keys[pygame.K_w]) - int(keys[pygame.K_DOWN] or keys[pygame.K_s])
         else:
-            self.direction.x = int(keys[pygame.K_RIGHT]) - int(keys[pygame.K_LEFT])
-            self.direction.y = int(keys[pygame.K_DOWN]) - int(keys[pygame.K_UP])
+            self.direction.x = int(keys[pygame.K_RIGHT] or keys[pygame.K_d]) - int(keys[pygame.K_LEFT] or keys[pygame.K_a])
+            self.direction.y = int(keys[pygame.K_DOWN] or keys[pygame.K_s]) - int(keys[pygame.K_UP] or keys[pygame.K_w])
         
         # Normalize to avoid faster diagonal movement
         if self.direction.magnitude() > 0:
